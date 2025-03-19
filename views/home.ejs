@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <title>File Upload Portal</title>
+</head>
+<body class="bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-200 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-blue-600 dark:bg-blue-800 text-white text-center py-5 shadow-lg">
+        <h1 class="text-3xl font-bold">File Upload Portal</h1>
+        <p class="text-sm opacity-80">Upload and manage your files easily</p>
+    </header>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-8 w-full">
+        <!-- Upload Section -->
+        <section class="text-center mb-6">
+            <h2 class="text-2xl font-semibold mb-2">Upload Your Files</h2>
+            <p class="text-gray-600 dark:text-gray-300">Click below to upload and view your uploaded files.</p>
+        </section>
+
+        <!-- Upload Button -->
+        <button onclick="showpop()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-md transition-transform transform hover:scale-105">
+            <i class="ri-upload-cloud-line mr-2"></i> Upload File
+        </button>
+
+        <!-- File Upload Modal -->
+        <div class="pop fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center hidden transition-opacity duration-300">
+            <div class="relative bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg w-96 animate-fade-in">
+                <button class="absolute top-3 right-3 text-gray-500 hover:text-gray-400 text-2xl" onclick="hidepop()">
+                    <i class="ri-close-line"></i>
+                </button>
+                <h3 class="text-lg font-semibold mb-4">Upload Your File</h3>
+                <form id="upload-form">
+                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-800 hover:bg-gray-100 transition">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-10 h-10 mb-4 text-gray-500 dark:text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG, GIF (MAX. 800x400px)</p>
+                        </div>
+                        <input id="dropzone-file" type="file" class="hidden" name="file" />
+                    </label>
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded mt-4 w-full transition-transform transform hover:scale-105">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Uploaded Files Section -->
+        <section class="mt-8 w-full max-w-2xl">
+            <h3 class="text-xl font-semibold mb-3 text-center">Uploaded Files</h3>
+            <ul id="file-list" class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg min-h-[100px] max-h-[300px] overflow-auto">
+                <p class="text-gray-500 dark:text-gray-400 text-center" id="no-files-message">No files uploaded yet.</p>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-4 mt-6">
+        <p class="text-sm">&copy; 2025 File Upload Portal. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script>
+        function showpop() {
+            document.querySelector('.pop').classList.remove('hidden');
+        }
+        function hidepop() {
+            document.querySelector('.pop').classList.add('hidden');
+        }
+
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Get file input
+            const fileInput = document.getElementById('dropzone-file');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert("Please select a file before submitting.");
+                return;
+            }
+
+            // Get file list container
+            const fileList = document.getElementById('file-list');
+            const noFilesMessage = document.getElementById('no-files-message');
+
+            // Remove "No files uploaded yet" message
+            if (noFilesMessage) {
+                noFilesMessage.remove();
+            }
+
+            // Create list item
+            const listItem = document.createElement('li');
+            listItem.className = "flex justify-between items-center border-b py-2";
+            listItem.textContent = file.name;
+
+            // Append to list
+            fileList.appendChild(listItem);
+
+            // Reset file input
+            fileInput.value = "";
+
+            // Hide modal
+            hidepop();
+        });
+    </script>
+
+</body>
+</html>
+ 
